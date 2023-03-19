@@ -66,11 +66,19 @@ class Product():
     def simulate_monthly_production(self, months = 12):
         unfulfilled_sales = 0
         net_profit = 0
+        total_net = 0
+        total_product_manuf = self.monthly_est  # set initial value
+        total_units_sold = 0
+        self.stock_level = total_product_manuf - total_units_sold
+
+        print("\n********Programming Principles Sample Stock Statement********")
+        print("\nProduct Code: {} \nProduct Name: {} \n\nSale Price: ${} CAD \nManufacture Cost: {} \nMonthly Production: {} (Approx.)\n".format(self.product_code, self.product_name, self.product_price, self.product_manuf, self.monthly_est))
         for month in range(1, months + 1):
-            product_manuf = random.randint(self.monthly_est - 10, self.monthly_est + 10)
-            self.total_product_manuf += product_manuf
-            units_sold = random.randint(self.total_product_manuf - self.stock_level - 10, self.total_product_manuf - self.stock_level + 10)
-            
+            product_manuf = self.monthly_est
+            total_product_manuf += product_manuf
+            units_sold = random.randint(product_manuf - 10, product_manuf + 10)
+            units_sold = max(product_manuf - 10, min(units_sold, product_manuf + 10)) # limit units_sold to the range [product_manuf - 10, product_manuf + 10]
+
             if units_sold < 0:
                 units_sold = 0
 
@@ -78,12 +86,20 @@ class Product():
                 unfulfilled_sales += units_sold - self.stock_level
                 units_sold = self.stock_level
 
-            self.total_units_sold += units_sold
-            self.stock_level = self.total_product_manuf - self.total_units_sold
-            net_profit = self.total_units_sold * self.product_price - self.total_product_manuf * self.product_manuf
+            total_units_sold += units_sold
+            self.stock_level = total_product_manuf - total_units_sold
+            net_profit += (total_units_sold * self.product_price) - (total_product_manuf * self.product_manuf)
+            total_net += net_profit
 
-            print("Month {}: Units Manufactured = {}, Units Sold = {}, Stock Level = {}, Net Profit = {}".format(month, product_manuf, units_sold, self.stock_level, net_profit))
+            self.generate_predicted_stock_statement(month, product_manuf, units_sold, self.stock_level)
+
+        if total_net > 0:
+            print("\nNet Profit: ${} CAD".format(total_net))
+        else:
+            print("\nIncurred Loss: ${} CAD".format(total_net))
+
+    def generate_predicted_stock_statement(self, month, product_manuf, units_sold, stock_level):
+        print("Month {} \n-\tManufactured: {} units \n-\tUnits Sold: {} units \n-\tStock: {}".format(month, product_manuf, units_sold, stock_level))
 
 product = Product()
 product.simulate_monthly_production()
-#print(product.product_code, product.product_name, product.product_price, product.product_manuf, product.stock_level, product.monthly_est)
