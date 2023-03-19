@@ -8,6 +8,8 @@ class Product():
         self.product_manuf = self.get_product_manuf()
         self.stock_level = self.get_stock_level()
         self.monthly_est = self.get_monthly_est()
+        self.total_product_manuf = 0
+        self.total_units_sold = 0
 
     def get_product_code(self):
         while True:
@@ -61,6 +63,27 @@ class Product():
             else:
                 print("Incorrect input, please re-enter Estimated Monthly Units: ")
 
-product = Product()
+    def simulate_monthly_production(self, months = 12):
+        unfulfilled_sales = 0
+        net_profit = 0
+        for month in range(1, months + 1):
+            product_manuf = random.randint(self.monthly_est - 10, self.monthly_est + 10)
+            self.total_product_manuf += product_manuf
+            units_sold = random.randint(self.total_product_manuf - self.stock_level - 10, self.total_product_manuf - self.stock_level + 10)
+            
+            if units_sold < 0:
+                units_sold = 0
 
-print(product.product_code, product.product_name, product.product_price, product.product_manuf, product.stock_level, product.monthly_est)
+            if units_sold > self.stock_level:
+                unfulfilled_sales += units_sold - self.stock_level
+                units_sold = self.stock_level
+
+            self.total_units_sold += units_sold
+            self.stock_level = self.total_product_manuf - self.total_units_sold
+            net_profit = self.total_units_sold * self.product_price - self.total_product_manuf * self.product_manuf
+
+            print("Month {}: Units Manufactured = {}, Units Sold = {}, Stock Level = {}, Net Profit = {}".format(month, product_manuf, units_sold, self.stock_level, net_profit))
+
+product = Product()
+product.simulate_monthly_production()
+#print(product.product_code, product.product_name, product.product_price, product.product_manuf, product.stock_level, product.monthly_est)
