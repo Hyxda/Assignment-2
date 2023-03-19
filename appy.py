@@ -88,18 +88,27 @@ class Product():
 
             total_units_sold += units_sold
             self.stock_level = total_product_manuf - total_units_sold
+            if self.stock_level < 0:
+                self.stock_level = 0
+
             net_profit += (total_units_sold * self.product_price) - (total_product_manuf * self.product_manuf)
             total_net += net_profit
 
             self.generate_predicted_stock_statement(month, product_manuf, units_sold, self.stock_level)
 
+        if unfulfilled_sales > 0:
+            print("\n{} units could not be sold due to insufficient stock.".format(unfulfilled_sales))
+        
+        product.profit_losses(total_net)
+
+    def generate_predicted_stock_statement(self, month, product_manuf, units_sold, stock_level):
+        print("Month {} \n-\tManufactured: {} units \n-\tUnits Sold: {} units \n-\tStock: {}".format(month, product_manuf, units_sold, stock_level))
+
+    def profit_losses(self, total_net):
         if total_net > 0:
             print("\nNet Profit: ${} CAD".format(total_net))
         else:
             print("\nIncurred Loss: ${} CAD".format(total_net))
-
-    def generate_predicted_stock_statement(self, month, product_manuf, units_sold, stock_level):
-        print("Month {} \n-\tManufactured: {} units \n-\tUnits Sold: {} units \n-\tStock: {}".format(month, product_manuf, units_sold, stock_level))
 
 product = Product()
 product.simulate_monthly_production()
