@@ -1,3 +1,8 @@
+"""
+Assignment 2 Object-Oriented Analysis, Design & Programming
+https://github.com/Hyxda/Assignment-2
+"""
+
 # Import the random module
 import random
 
@@ -134,6 +139,8 @@ class Product():
             
             # Calculate the net profit for the current month and add it to the total net profit
             net_profit += (total_units_sold * self.product_price) - (total_product_manuf * self.product_manuf)
+
+            # Add the net profit for the month to the total net profit
             total_net += net_profit
 
             # Generate a predicted stock statement for the current month
