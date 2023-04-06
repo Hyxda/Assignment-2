@@ -101,7 +101,7 @@ class Product():
 
         # Print a statement about the current stock of the product
         print("\n********Programming Principles Sample Stock Statement********")
-        print("\nProduct Code: {} \nProduct Name: {} \n\nSale Price: ${} CAD \nManufacture Cost: {} \nMonthly Production: {} (Approx.)\n".format(self.product_code, self.product_name, self.product_price, self.product_manuf, self.monthly_est))
+        print("\nProduct Code: {} \nProduct Name: {} \n\nSale Price: ${} CAD \nManufacture Cost: ${} CAD \nMonthly Production: {} units (Approx.)\n".format(self.product_code, self.product_name, self.product_price, self.product_manuf, self.monthly_est))
         
         # Loop through each month specified, generating a prediction for the stock statement for each month
         for month in range(1, months + 1):
@@ -155,7 +155,7 @@ class Product():
 
     # Define a function named "generate_predicted_stock_statement" that displays monthly information for product manufactured, units sold, & stock level 
     def generate_predicted_stock_statement(self, month, product_manuf, units_sold, stock_level):
-        print("Month {} \n-\tManufactured: {} units \n-\tUnits Sold: {} units \n-\tStock: {}".format(month, product_manuf, units_sold, stock_level))
+        print("Month {} \n:\tManufactured: {} units \n:\tUnits Sold: {} units \n:\tStock: {}".format(month, product_manuf, units_sold, stock_level))
 
     # Define a function named "profit_losses" that displays net profit or incurred losses
     def profit_losses(self, total_net):
@@ -163,7 +163,6 @@ class Product():
             print("\nNet Profit: ${} CAD".format(total_net))
         else:
             print("\nIncurred Loss: ${} CAD".format(total_net))
-
-
+        
 product = Product()
 product.simulate_monthly_production()
